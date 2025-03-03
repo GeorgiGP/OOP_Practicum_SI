@@ -1,3 +1,8 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
 const int MAX_PAIR_COUNT = 25;
 struct Pair
 {
