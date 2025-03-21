@@ -19,7 +19,7 @@ int getOccurrencesCount(const char* str, char ch)
 
 	for (size_t i = 0; str[i] != '\0'; i++)
 	{
-		if (str[i] == ch) 
+		if (str[i] == ch)
 		{
 			count++;
 		}
@@ -50,7 +50,7 @@ char charToUpper(char ch)
 
 char* modifyStr(char* str, char (*modify)(char))
 {
-	if (str == nullptr || modify ==  nullptr)
+	if (str == nullptr || modify == nullptr)
 	{
 		return nullptr;
 	}
@@ -130,7 +130,6 @@ StringManipulator& StringManipulator::setStr(const char* str, int n)
 	if (this->str != nullptr)
 	{
 		delete[] this->str;
-		this->str = nullptr;
 	}
 
 	int length = strlen(str);
@@ -200,6 +199,8 @@ const StringManipulator& StringManipulator::writeToFile(const char* filePath) co
 	outFile.write(str, length);
 	outFile.write(reinterpret_cast<const char*>(&errorState), sizeof(errorState));
 
+	outFile.close();
+
 	return *this;
 }
 
@@ -225,6 +226,8 @@ StringManipulator& StringManipulator::readFromFile(const char* filePath)
 
 	inFile.read(str, strLength);
 	inFile.read(reinterpret_cast<char*>(&errorState), sizeof(errorState));
+
+	inFile.close();
 
 	return *this;
 }
