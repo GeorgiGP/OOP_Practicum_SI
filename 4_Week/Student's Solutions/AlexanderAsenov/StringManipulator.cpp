@@ -10,8 +10,8 @@ size_t StringManipulator::getBuffer() const
 
 void StringManipulator::setBuffer(size_t buffer)
 {
-	if (this->getStrLength() + 1 > buffer) {
-		return;
+	while (this->getStrLength() + 1 > buffer) {
+		buffer *= 2;
 	}
 
 	this->buffer = buffer;
@@ -19,17 +19,22 @@ void StringManipulator::setBuffer(size_t buffer)
 	this->str = new char[buffer];
 
 	if (prev != nullptr) {
-		this->setStr(prev);
+		for (size_t i = 0; i < this->getStrLength(); i++)
+		{
+			this->str[i] = prev[i];
+		}
+		this->str[this->getStrLength()] = '\0';
 		delete[] prev;
 	}
 }
 
 void StringManipulator::copy(const StringManipulator& stringManipulator)
 {
-	this->setBuffer(0);
+	this->str = nullptr;
 	this->strLength = 0;
-	this->setStr(stringManipulator.getStr());
+	this->setBuffer(1);
 	this->errorState = stringManipulator.getErrorState();
+	this->setStr(stringManipulator.getStr());
 }
 
 void StringManipulator::remove()
@@ -118,11 +123,13 @@ StringManipulator& StringManipulator::setStr(const char* str)
 	}
 
 	size_t strLength = strlen(str);
-	
+
 	if (this->getBuffer() == 0 || this->str == nullptr) {
 		this->setBuffer(1);
 	}
 
+
+	this->strLength = strLength;
 	while (this->getBuffer() < strLength + 1) {
 		this->setBuffer(this->getBuffer() * 2);
 	}
@@ -134,6 +141,11 @@ StringManipulator& StringManipulator::setStr(const char* str)
 
 	this->str[strLength] = '\0';
 	this->strLength = strLength;
+
+	while (this->getBuffer() / 2 > (strLength + 1) && this->getBuffer() / 2 != 0) {
+		this->setBuffer(this->getBuffer() / 2);
+	}
+
 	return *this;
 }
 
@@ -198,9 +210,9 @@ StringManipulator& StringManipulator::readFromFile(const char* fileName)
 	stream.read(reinterpret_cast<char*>(&strLength), sizeof(size_t));
 	char* newStr = new char[strLength + 1];
 	stream.read(newStr, strLength + 1);
-	
+
 	this->setStr(newStr);
-	
+
 	delete[] newStr;
 	stream.close();
 
@@ -215,7 +227,7 @@ StringManipulator& StringManipulator::concat(const StringManipulator& stringMani
 
 	size_t sizeConcat = this->getStrLength() + stringManipulator.getStrLength();
 	char* newStr = new char[sizeConcat + 1];
-	
+
 	for (size_t i = 0; i < this->getStrLength(); i++)
 	{
 		newStr[i] = this->str[i];
@@ -327,13 +339,13 @@ StringManipulator& StringManipulator::removeAt(size_t pos, size_t length)
 	}
 
 	char* newStr = new char[this->getStrLength() + 1];
-	strcpy_s(newStr, this->getStrLength() + 1 , this->getStr());
+	strcpy_s(newStr, this->getStrLength() + 1, this->getStr());
 
 	for (size_t i = pos + length; i < this->getStrLength(); i++)
 	{
 		newStr[i - length] = newStr[i];
 	}
-	
+
 	newStr[this->getStrLength() - length] = '\0';
 	this->setStr(newStr);
 	delete[] newStr;
