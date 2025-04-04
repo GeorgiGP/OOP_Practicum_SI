@@ -36,7 +36,9 @@
 
 #
 ## Вижте решенията <i>единствено след като сте си решили задачите</i>!
-### Може да ги видите тук: https://github.com/Angeld55/Object-oriented_programming_FMI/tree/master/Week%2007
-### Решението на NVector е и в записките за Week7
+### Решенията може да ги видите тук: 
+### с double: https://github.com/GeorgiGP/OOP_Practicum_SI/edit/main/7_Week
+### с int: https://github.com/Angeld55/Object-oriented_programming_FMI/tree/master/Week%2007 
+### Решението на NVector с int е и в записките за Week7
 
  
