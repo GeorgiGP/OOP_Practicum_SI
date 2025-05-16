@@ -39,19 +39,38 @@ public:
     }
 
     const T& operator[](int pos) const{
-        Node* res = begin;
-        for (int i = 0; i < pos; ++i) {
-            res = res->next;
+        if (pos <= _size / 2) {
+            Node* res = begin;
+            for (int i = 0; i < pos; ++i) {
+                res = res->next;
+            }
+            return res->element;
         }
-        return res->element;
+        else {
+            Node* res = end;
+            for (int i = _size - 1; i > pos; --i) {
+                res = res->prev;
+            }
+            return res->element;
+        }
+        
     }
 
     T& operator[](int pos) {
-        Node* res = begin;
-        for (int i = 0; i < pos; ++i) {
-            res = res->next;
+        if (pos <= _size / 2) {
+            Node* res = begin;
+            for (int i = 0; i < pos; ++i) {
+                res = res->next;
+            }
+            return res->element;
         }
-        return res->element;
+        else {
+            Node* res = end;
+            for (int i = _size - 1; i > pos; --i) {
+                res = res->prev;
+            }
+            return res->element;
+        }
     }
 
     void clear() {
